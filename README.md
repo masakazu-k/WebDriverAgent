@@ -89,3 +89,28 @@ If you want to help us out, you are more than welcome to. However please make su
 [`WebDriverAgent` is BSD-licensed](LICENSE). We also provide an additional [patent grant](PATENTS).
 
 Have fun!
+
+## 解析結果
+
+### POINT
+
+ * FBElementCommands がメイン処理
+ * UITestingUITests.m の testSocketRunner がエントリーポイント（個別実行）
+ * FBSession の application でアクティブなApplicationを探している（testedApplicationが必ずnull？）
+ * FBApplication fb_activeApplicationでアクティブなApplicationを取っている．
+ * FBElementCommandsのgestureCoordinateWithCoordinate内でinitWithElementで操作対象のElementなし（Applicationのルート）で，タッチ条件を生成している
+
+### 結論
+
+以下のような実装（流れ）でios-minitouchは実装できそう
+
+ * FBApplication fb_activeApplication でアクティブなApplicationを探す（必要か？）
+ * elemenent は常にnilの扱い
+ * gestureCoordinateWithCoordinateで座標を生成
+ * 実行！
+
+### その他．
+
+ * handleDrag ドラッグ
+ * handleTap タップ
+ * elementForUUID 対象の要素を取得(今回の場合，”0”で固定でいいし，nilでいい)
